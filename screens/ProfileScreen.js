@@ -28,7 +28,7 @@ export default function ProfileScreen({route, navigation}) {
         </View>
         <Text style={styles.h3}>Dashboard</Text>
         
-        { /* <WorkoutsPerWeek/> */ }
+        <WorkoutsPerWeek/>
         
       </ScrollView>
     </View>

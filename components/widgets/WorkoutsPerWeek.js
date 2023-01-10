@@ -1,22 +1,100 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
 export default function WorkoutsPerWeek(props) {
 
   const workouts = useSelector(state => state.workouts);
 
+  function getPreviousMonday() {
+    let date = new Date();
+    let day = date.getDay();
+    let prevMonday = new Date();
+
+    if(date.getDay() == 0) {
+        prevMonday.setDate(date.getDate() - 7);
+    } else {
+        prevMonday.setDate(date.getDate() - (day-1));
+    }
+
+    prevMonday.setHours(0);
+    prevMonday.setMinutes(0);
+    prevMonday.setSeconds(0);
+    prevMonday.setMilliseconds(0);
+    return prevMonday;
+  }
+
+  let prevMonday = getPreviousMonday();
+
+  let mondays = [];
+
+  const weeksToDisplay = 6;
+
+  for(let i = 0; i < weeksToDisplay; i++) {
+    let date = new Date();
+
+    date.setDate(prevMonday.getDate() - (i * 7));
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+
+    mondays.unshift(date);
+  }
+
+  let workoutsPerWeek = [];
+
+  let datesOfWorkouts = workouts.map(workout => new Date(workout.date)).filter(date => date >= mondays[0]);
+
+  for(let i = 0; i < weeksToDisplay; i++) {
+    let minDate = mondays[i];
+    let maxDate = (i === weeksToDisplay - 1)? new Date() : mondays[i + 1];
+
+    //Very unoptimised. Hopefully it doesn't matter
+
+    workoutsPerWeek.push(datesOfWorkouts.filter(date => date >= minDate && date <= maxDate).length);
+  }
+
+  let data = workoutsPerWeek.map((val, i) => ({x: mondays[i], y: workoutsPerWeek[i]}) );
+
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity disabled={true} style={styles.card}>
       <Text style={styles.h3}>Workouts Per Week</Text>
       <Text style={{color: '#515151', fontSize: 16}}>Activity</Text>
       <VictoryChart
         theme={VictoryTheme.material}
-        domainPadding={20}
+        domainPadding={{x: 20}}
+        height={200}
+        width={280}
+        padding={{
+          left: 30,
+          bottom: 30,
+          top: 22
+        }}
       >
+        <VictoryAxis
+          style={{
+            grid: { stroke: "transparent" },
+          }}
+          tickFormat={tick => {
+            let date = new Date(tick);
+
+            return `${date.getDate()}/${date.getMonth() + 1}`;
+          }}
+          tickValues={mondays}
+        />
         <VictoryBar
-          style={{ data: { fill: "#c43a31" } }}
-          data={[3,4,2,3,2]}
+          style={{ data: { fill: "#58A5F8" } }}
+          data={data}
+        />
+        <VictoryAxis 
+          tickCount={2} 
+          dependentAxis
+          style={{
+            grid: { 
+              stroke: "lightgrey",
+            },
+          }}
         />
       </VictoryChart>
     </TouchableOpacity>

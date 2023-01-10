@@ -50,7 +50,7 @@ export default function FinishedWorkoutScreen({route, navigation}) {
       </View>
       
       <Text style={styles.title}>Congratulations!</Text>
-      <Text style={styles.subheading}>You've completed your {workouts.length}th workout</Text>
+      <Text style={styles.subheading}>You've completed your {workouts.length.nth()} workout</Text>
 
       <ScrollView style={{
         width: Dimensions.get('window').width,

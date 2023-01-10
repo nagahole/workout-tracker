@@ -55,6 +55,16 @@ String.prototype.truncate = function(n) {
   return (this.length > n) ? this.slice(0, n-1) + ".." : this;//'&hellip;' : this;
 }
 
+Number.prototype.nth = function() {
+  if (this > 3 && this < 21) return this.toString() +'th';
+  switch (this % 10) {
+    case 1:  return this.toString() + "st";
+    case 2:  return this.toString() + "nd";
+    case 3:  return this.toString() + "rd";
+    default: return this.toString() + "th";
+  }
+}
+
 class HelperFunctions {
 
   static getWorkouts = () => useSelector(state => state.workouts );
