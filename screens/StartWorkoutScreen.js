@@ -16,6 +16,12 @@ export default function StartWorkoutScreen({route, navigation}) {
 
   const insets = useSafeAreaInsets();
 
+  const dispatch = useDispatch();
+
+  const theme = useSelector(state => state.theme);
+  const templates = useSelector(state => state.templates);
+  const workouts = useSelector(state => state.workouts);
+
   function startWorkout(template = new WorkoutTemplate("New Workout", [])) {
     navigation.navigate("Workout", { 
       startTime: Date.now(),
@@ -33,7 +39,6 @@ export default function StartWorkoutScreen({route, navigation}) {
     });
   }
 
-  const templates = useSelector(state => state.templates);
 
   function editTemplate(template, index) {
     navigation.navigate("Workout", {
@@ -48,10 +53,6 @@ export default function StartWorkoutScreen({route, navigation}) {
       }
     });
   }
-
-  const dispatch = useDispatch();
-
-  const workouts = useSelector(state => state.workouts);
 
   function sortWorkoutsByDate() {
     let _workouts = structuredClone(workouts)
@@ -119,6 +120,7 @@ export default function StartWorkoutScreen({route, navigation}) {
         paddingTop: insets.top,
         paddingLeft: insets.left,
         paddingRight: insets.right,
+        backgroundColor: theme === 'light'? 'transparent' : '#2B3135'
       }}
     >
       <ScrollView 

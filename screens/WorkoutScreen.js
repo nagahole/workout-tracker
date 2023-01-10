@@ -312,16 +312,18 @@ class WorkoutScreen extends React.Component {
 
   cancelWorkoutButton() {
     Alert.alert(
-      this.isTemplateMode() ? (this.isEditTemplateMode()? 'Discard Changes?' : 'Cancel Template?') 
+      this.isTemplateMode() ? (this.isEditTemplateMode()? 'Delete Template?' : 'Discard Template?') 
       : this.isEditWorkoutMode()? 'Delete Workout?' : 'Cancel Workout?',
       'This cannot be undone. Continue?',
       [
         { text: "Don't leave", style: 'cancel', onPress: () => {} },
         {
-          text: this.isEditTemplateMode()? 'Discard' : (this.isEditWorkoutMode()? 'Delete' : 'Exit'),
+          text: this.isEditTemplateMode()? 'Delete' : (this.isEditWorkoutMode()? 'Delete' : 'Exit'),
           style: 'destructive',
           onPress: () => {
-            if(this.isEditWorkoutMode()) {//DELETE WORKOUT
+            if (this.isEditTemplateMode()) {
+              this.props.route.params.deleteTemplate();
+            } else if (this.isEditWorkoutMode()) {//DELETE WORKOUT
               this.props.route.params.deleteWorkout();
               this.props.navigation.goBack();
             } else {
@@ -333,17 +335,17 @@ class WorkoutScreen extends React.Component {
     );
   }
 
-  deleteTemplateButton() {
+  cancelEditTemplateButton() {
     Alert.alert(
-      'Delete template?',
+      'Discard Changes?',
       'This cannot be undone. Continue?',
       [
-        { text: "Cancel", style: 'cancel', onPress: () => {} },
+        { text: "Go back", style: 'cancel', onPress: () => {} },
         {
-          text: 'Delete',
+          text: 'Discard',
           style: 'destructive',
           onPress: () => {
-            this.props.route.params.deleteTemplate();
+            this.props.navigation.goBack();
           },
         },
       ]
@@ -480,13 +482,13 @@ class WorkoutScreen extends React.Component {
     )
   }
 
-  renderDeleteTemplateButton() {
+  renderCancelEditTemplateButton() {
     return (
       <TouchableOpacity 
-        style={styles.destructiveButton}
-        onPress={() => {this.deleteTemplateButton()} }
+        style={[styles.restTimerButtonContainer, { marginLeft: -113 } ]}
+        onPress={() => {this.cancelEditTemplateButton()} }
       >
-        <Text style={styles.finishText}>Delete Template</Text>
+        <FontAwesomeIcon icon="fa-solid fa-xmark" size={18}/>
       </TouchableOpacity>
     )
   }
@@ -538,7 +540,7 @@ class WorkoutScreen extends React.Component {
                 !this.isEditTemplateMode()? (!this.isEditWorkoutMode()? null :
                   this.renderCancelButton()
                 ) :
-                  this.renderDeleteTemplateButton()
+                  this.renderCancelEditTemplateButton()
               ) : 
               <TouchableOpacity 
                 style={[styles.restTimerButtonContainer, 
@@ -575,7 +577,7 @@ class WorkoutScreen extends React.Component {
             }
           </View>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <TouchableOpacity style={[styles.finishButton, this.isTemplateMode()? (this.isEditTemplateMode()? {marginRight: -60} : { marginRight: -110 }) : 
+            <TouchableOpacity style={[styles.finishButton, this.isTemplateMode()? (this.isEditTemplateMode()? {marginLeft: 32.5} : { marginRight: -110 }) : 
               (this.isEditWorkoutMode()? { marginLeft: -80 } : null) ]} onPress={() => { this.finishWorkoutButton() }}>
               <Text style={styles.finishText}>{(this.isEditTemplateMode() || this.isEditWorkoutMode())? "Finish Editing" : "Finish"}</Text>
             </TouchableOpacity>
@@ -628,7 +630,7 @@ class WorkoutScreen extends React.Component {
               </View>
               <View>
                 <Button
-                  title={this.isTemplateMode()? (this.isEditTemplateMode()? "DISCARD CHANGES" : "CANCEL TEMPLATE") 
+                  title={this.isTemplateMode()? (this.isEditTemplateMode()? "DELETE TEMPLATE" : "DISCARD TEMPLATE") 
                   : this.isEditWorkoutMode()? "DELETE WORKOUT" : "CANCEL WORKOUT"}
                   color="red"
                   onPress={() => { this.cancelWorkoutButton() }}

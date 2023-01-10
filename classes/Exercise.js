@@ -1,11 +1,7 @@
-class Exercise {
+export default class Exercise {
   constructor(name) {
     this.name = name;
-    this.id = Exercise.count;
+    this.id = name.toLowerCase().replace(/ /g,"_");
     Exercise.count++;
   }
 }
-
-Exercise.count = 0;
-
-export default Exercise;

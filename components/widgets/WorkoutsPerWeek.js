@@ -65,7 +65,7 @@ export default function WorkoutsPerWeek(props) {
         theme={VictoryTheme.material}
         domainPadding={{x: 20}}
         height={200}
-        width={Dimensions.get('window').width - 75}
+        width={Dimensions.get('window').width - 85}
         padding={{
           left: 30,
           bottom: 30,
@@ -75,6 +75,9 @@ export default function WorkoutsPerWeek(props) {
         <VictoryAxis
           style={{
             grid: { stroke: "transparent" },
+            tickLabels: {
+              letterSpacing: "1px",
+            }
           }}
           tickFormat={tick => {
             let date = new Date(tick);
@@ -90,10 +93,12 @@ export default function WorkoutsPerWeek(props) {
         <VictoryAxis 
           tickCount={2} 
           dependentAxis
+          tickFormat={ tick => Math.round(tick) }
           style={{
-            grid: { 
-              stroke: "lightgrey",
-            },
+            grid: { stroke: "lightgrey" },
+            tickLabels: {
+              fontSize: 14
+            }
           }}
         />
       </VictoryChart>

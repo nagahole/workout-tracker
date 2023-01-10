@@ -95,7 +95,7 @@ export default function ChartsScreen({route, navigation}) {
                   }}
                 />
                 <VictoryAxis
-                  tickCount={3}
+                  tickCount={2}
                   style={{
                     grid: { stroke: "lightgrey" },
                     tickLabels: {
@@ -109,7 +109,13 @@ export default function ChartsScreen({route, navigation}) {
                   tickFormat={(tick) => {
                     let date = new Date(tick);
 
-                    if (timeRange < 8.64e+7) {//a day
+                    if (timeRange < 300000) {// 5 minutes
+                      return date.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        second: "2-digit"
+                      });
+                    } else if (timeRange < 8.64e+7) {//a day
                       return date.toLocaleTimeString("en-US", {
                         hour: "numeric", 
                         minute: "2-digit"

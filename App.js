@@ -34,6 +34,7 @@ export default function App() {
           <Tab.Navigator
             initialRouteName="Start Workout"
             screenOptions={({ route }) => ({
+              tabBarHideOnKeyboard: true,
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
 
