@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
@@ -65,7 +65,7 @@ export default function WorkoutsPerWeek(props) {
         theme={VictoryTheme.material}
         domainPadding={{x: 20}}
         height={200}
-        width={280}
+        width={Dimensions.get('window').width - 75}
         padding={{
           left: 30,
           bottom: 30,

@@ -283,7 +283,8 @@ class WorkoutScreen extends React.Component {
           })
         }
         <View style={{
-          paddingHorizontal: 15
+          paddingHorizontal: 20,
+          paddingVertical: 10
         }}>
           <Button
             title="ADD SET"
@@ -610,25 +611,29 @@ class WorkoutScreen extends React.Component {
           }
           ListFooterComponent={
             <View style={styles.footerContainer}>
-              <Button
-                title="ADD EXERCISE"
-                onPress={() => { this.props.navigation.navigate("Add Exercise", {
-                    onExerciseSelected: (exercise) => {
-                      this.setState(prev => ({
-                        workoutExercises: [...prev.workoutExercises, new WorkoutExercise(exercise, 1)]
-                      }));
-                    },
-                    navigateTo: "_PREVIOUSSCREEN",
-                    accountForStatusBarHeight: false,
-                  }) 
-                }}
-              />
-              <Button
-                title={this.isTemplateMode()? (this.isEditTemplateMode()? "DISCARD CHANGES" : "CANCEL TEMPLATE") 
-                : this.isEditWorkoutMode()? "DELETE WORKOUT" : "CANCEL WORKOUT"}
-                color="red"
-                onPress={() => { this.cancelWorkoutButton() }}
-              />
+              <View style={{ marginBottom: 10 }}>
+                <Button
+                  title="ADD EXERCISE"
+                  onPress={() => { this.props.navigation.navigate("Add Exercise", {
+                      onExerciseSelected: (exercise) => {
+                        this.setState(prev => ({
+                          workoutExercises: [...prev.workoutExercises, new WorkoutExercise(exercise, 1)]
+                        }));
+                      },
+                      navigateTo: "_PREVIOUSSCREEN",
+                      accountForStatusBarHeight: false,
+                    }) 
+                  }}
+                />
+              </View>
+              <View>
+                <Button
+                  title={this.isTemplateMode()? (this.isEditTemplateMode()? "DISCARD CHANGES" : "CANCEL TEMPLATE") 
+                  : this.isEditWorkoutMode()? "DELETE WORKOUT" : "CANCEL WORKOUT"}
+                  color="red"
+                  onPress={() => { this.cancelWorkoutButton() }}
+                />
+              </View>
             </View>
           }
           contentContainerStyle={styles.contentContainer}

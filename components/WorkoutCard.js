@@ -14,7 +14,7 @@ export default function WorkoutCard(props) {
   year = year === new Date(Date.now()).getFullYear()? '' : year.toString() + ' ';
 
   return (
-    <TouchableOpacity disabled={props.onPress === null? true : false} style={styles.card} onPress={() => { onPress() }}>
+    <TouchableOpacity disabled={props.onPress === null? true : false} style={styles.card} onPress={() => { props.onPress() }}>
       <Text style={styles.workoutName}>{workout.name}</Text>
       <View style={{
         display: 'flex',
@@ -46,7 +46,7 @@ export default function WorkoutCard(props) {
 
           let bestSet = val.sets[0];
 
-          let string = (val.sets.length.toString() + ' × ' + val.exercise.name.toString()).truncate(40);
+          let string = (val.sets.length.toString() + ' × ' + val.exercise.name.toString()).truncate(30);
 
           for (let weightAndReps of val.sets) {
 
