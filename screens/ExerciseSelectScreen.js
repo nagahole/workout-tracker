@@ -7,6 +7,8 @@ import Constants from "expo-constants";
 
 export default function ExerciseSelectScreen({route, navigation}) {
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   const [ searchText, setSearchText ] = useState("");
 
   let dict = HelperFunctions.getExercisesSortedAlphabetically(searchText);
@@ -31,15 +33,20 @@ export default function ExerciseSelectScreen({route, navigation}) {
   }
 
   return (
-    <View style={[{flex: 1}, route.params.accountForStatusBarHeight? { paddingTop: Constants.statusBarHeight } : null ]}>
+    <View style={[
+      {flex: 1}, 
+      route.params.accountForStatusBarHeight? { paddingTop: Constants.statusBarHeight } : null,
+      isLightMode? null : {backgroundColor: '#111'}
+      ]}>
       <FlatList 
         keyExtractor={item => item.key} 
         ListHeaderComponent={
           <View>
             <TextInput 
               placeholder="Search for an exercise"
-              style={styles.searchBar}
+              style={isLightMode? styles.searchBar_light : styles.searchBar_dark}
               onChangeText={text => { setSearchText(text) }}
+              placeholderTextColor="#666"
             />
           </View>
         }
@@ -53,12 +60,12 @@ export default function ExerciseSelectScreen({route, navigation}) {
           let key = item.key;
           return (
             <View key={key}>
-              <Text style={styles.alphabet}>{key}</Text>
+              <Text style={isLightMode? styles.alphabet_light : styles.alphabet_dark}>{key}</Text>
               {
                 dict[key].map((exercise, i, arr) => {
                   return (
-                    <TouchableOpacity style={styles.exerciseContainer} key={exercise.id} onPress={() => { onExerciseSelected(exercise) }}>
-                      <Text style={styles.exerciseText}>{exercise.name}</Text>
+                    <TouchableOpacity style={isLightMode? styles.exerciseContainer_light : styles.exerciseContainer_dark} key={exercise.id} onPress={() => { onExerciseSelected(exercise) }}>
+                      <Text style={isLightMode? styles.exerciseText_light : styles.exerciseText_dark}>{exercise.name}</Text>
                     </TouchableOpacity>
                   )
                 })
@@ -76,7 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  searchBar: {
+  searchBar_light: {
     backgroundColor: "rgba(0,0,0,0.07)",
     marginHorizontal: 15,
     marginTop: 15,
@@ -86,7 +93,17 @@ const styles = StyleSheet.create({
     color: "#818181"
   },
 
-  alphabet: {
+  searchBar_dark: {
+    backgroundColor: "rgba(255,255,255,0.14)",
+    marginHorizontal: 15,
+    marginTop: 15,
+    padding: 10,
+    fontSize: 16,
+    borderRadius: 10,
+    color: "white",
+  },
+
+  alphabet_light: {
     fontSize: 16,
     padding: 15,
     paddingLeft: 20,
@@ -94,16 +111,37 @@ const styles = StyleSheet.create({
     color: "#919191"
   },
 
-  exerciseText: {
+  alphabet_dark: {
+    fontSize: 16,
+    padding: 15,
+    paddingLeft: 20,
+    paddingTop: 30,
+    color: "#aaa"
+  },
+
+  exerciseText_light: {
     fontSize: 19,
     color: "#515151"
   },
 
-  exerciseContainer: {
+  exerciseText_dark: {
+    fontSize: 19,
+    color: "#eee"
+  },
+
+  exerciseContainer_light: {
     borderBottomWidth: 1,
     borderBottomColor: "#e1e1e1",
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: "#eaeaea"
+  },
+
+  exerciseContainer_dark: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#202020",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: "#181818"
   }
 })

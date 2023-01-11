@@ -5,6 +5,8 @@ import HelperFunctions from "../classes/HelperFunctions";
 
 export default function WorkoutInfo(props) {
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   let workout = props.workout;
 
   let date = new Date(workout.date);
@@ -39,11 +41,13 @@ export default function WorkoutInfo(props) {
         >
           <Text style={{
             fontWeight: 'bold',
-            fontSize: 16
+            fontSize: 16,
+            color: isLightMode? 'black' : 'white',
           }}>{workoutExercise.exercise.name.truncate(30)}</Text>
           <Text style={{
             fontWeight: 'bold',
-            fontSize: 16
+            fontSize: 16,
+            color: isLightMode? 'black' : 'white',
           }}>1RM</Text>
         </View>
         {
@@ -59,9 +63,9 @@ export default function WorkoutInfo(props) {
                   alignItems: 'center',
                 }}  
               >
-                <Text style={[{flex: 1}, styles.setsText]}>{i + 1}</Text>
-                <Text style={[{flex: 6}, styles.setsText]}>{weightAndReps.weight} kg × {weightAndReps.reps}</Text>
-                <Text style={[{flex: 4, textAlign: 'right'}, styles.setsText]}>{Math.round(HelperFunctions.calculateOneRepMax(weightAndReps))}</Text>
+                <Text style={[{flex: 1}, isLightMode? styles.setsText_light : styles.setsText_dark]}>{i + 1}</Text>
+                <Text style={[{flex: 6}, isLightMode? styles.setsText_light : styles.setsText_dark]}>{weightAndReps.weight} kg × {weightAndReps.reps}</Text>
+                <Text style={[{flex: 4, textAlign: 'right'}, isLightMode? styles.setsText_light : styles.setsText_dark]}>{Math.round(HelperFunctions.calculateOneRepMax(weightAndReps))}</Text>
               </View>
             )
           })
@@ -85,16 +89,16 @@ export default function WorkoutInfo(props) {
           position: 'absolute'
         }}></View>
       </TouchableWithoutFeedback>
-      <View style={[styles.workoutInfoCard, {
+      <View style={[isLightMode? styles.workoutInfoCard_light : styles.workoutInfoCard_dark, {
       }]}>
         <View style={styles.headerContainer}>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <TouchableOpacity style={styles.xmarkButton} onPress={ () => { props.closeModal() }}>
-              <FontAwesomeIcon icon="fa-solid fa-xmark" size={20}/>
+            <TouchableOpacity style={isLightMode? styles.xmarkButton_light : styles.xmarkButton_dark} onPress={ () => { props.closeModal() }}>
+              <FontAwesomeIcon icon="fa-solid fa-xmark" size={20} color={isLightMode? "black" : "white"}/>
             </TouchableOpacity>
           </View>
           <View style={{flex: 7, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.title}>{workout.name}</Text>
+            <Text style={isLightMode? styles.title_light : styles.title_dark}>{workout.name}</Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             {
@@ -109,7 +113,7 @@ export default function WorkoutInfo(props) {
         <View style={{
           paddingHorizontal: 15
         }}>
-          <Text style={styles.workoutDate}>{time} {dayOfTheWeek}, {day} {month} {year}</Text>
+          <Text style={isLightMode? styles.workoutDate_light : styles.workoutDate_dark}>{time} {dayOfTheWeek}, {day} {month} {year}</Text>
         </View>
 
         <FlatList
@@ -129,8 +133,14 @@ export default function WorkoutInfo(props) {
 }
 
 const styles = StyleSheet.create({
-  workoutInfoCard: {
+  workoutInfoCard_light: {
     backgroundColor: 'white',
+    borderRadius: 20,
+    width: '90%'
+  },
+
+  workoutInfoCard_dark: {
+    backgroundColor: '#111',//'#2B3135',
     borderRadius: 20,
     width: '90%'
   },
@@ -143,19 +153,37 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
 
-  title: {
+  title_light: {
     fontWeight: 'bold',
     fontSize: 16
   },
 
-  xmarkButton: {
+  title_dark: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: 'white'
+  },  
+
+  xmarkButton_light: {
     backgroundColor: 'rgba(0,0,0,0.1)',
-    padding: 2,
+    padding: 4,
     borderRadius: 8
   },
 
-  workoutDate: {
+  xmarkButton_dark: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    padding: 4,
+    borderRadius: 8
+  },
+
+  workoutDate_light: {
     color: '#515151',
+    fontSize: 16,
+    marginBottom: 15
+  },
+
+  workoutDate_dark: {
+    color: '#aaa',
     fontSize: 16,
     marginBottom: 15
   },
@@ -173,8 +201,13 @@ const styles = StyleSheet.create({
     color: 'white'
   },
 
-  setsText: {
+  setsText_light: {
     fontSize: 16,
     color: "#313131",
+  },
+
+  setsText_dark: {
+    fontSize: 16,
+    color: "#aaa",
   }
 });

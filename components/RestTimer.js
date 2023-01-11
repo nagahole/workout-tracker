@@ -3,10 +3,13 @@ import { Dimensions, StyleSheet, Text, View, TouchableWithoutFeedback } from "re
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer"
+import HelperFunctions from "../classes/HelperFunctions";
 
 export default function RestTimer(props) {
 
   const insets = useSafeAreaInsets();
+
+  const isLightMode = HelperFunctions.isLightMode();
 
   return (
     <View style={styles.container}>
@@ -19,7 +22,7 @@ export default function RestTimer(props) {
           position: 'absolute'
         }}></View>
       </TouchableWithoutFeedback>
-      <View style={[styles.card, {
+      <View style={[isLightMode? styles.card_light : styles.card_dark, {
         marginTop: insets.top + 10,
         marginLeft: insets.left,
         marginRight: insets.right,
@@ -27,22 +30,20 @@ export default function RestTimer(props) {
       }]}>
         <View style={styles.headerContainer}>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <TouchableOpacity style={styles.xmarkButton} onPress={props.closeModal}>
-              <FontAwesomeIcon icon="fa-solid fa-xmark" size={20}/>
+            <TouchableOpacity style={isLightMode? styles.xmarkButton_light : styles.xmarkButton_dark} onPress={props.closeModal}>
+              <FontAwesomeIcon icon="fa-solid fa-xmark" size={20} color={isLightMode? "black" : "white"}/>
             </TouchableOpacity>
           </View>
           <View style={{flex: 7, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.title}>Rest Timer</Text>
+            <Text style={isLightMode? styles.title_light : styles.title_dark}>Rest Timer</Text>
           </View>
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-
-          </View>
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}></View>
         </View>
         
         <View style={{height: 20}}>
           {
             props.restTimerRunning? null :
-              <Text style={styles.descriptionText}>Choose a duration below</Text>
+              <Text style={isLightMode? styles.descriptionText_light : styles.descriptionText_dark}>Choose a duration below</Text>
           }
         </View>
 
@@ -59,25 +60,25 @@ export default function RestTimer(props) {
               if (!props.restTimerRunning)
                 return (
                   <View>
-                    <TouchableOpacity style={styles.timeButton} onPress={() => { props.startRestTimer(60) }}>
-                    <Text style={styles.timePresetText}>1:00</Text>
+                    <TouchableOpacity style={isLightMode? styles.timeButton_light : styles.timeButton_dark} onPress={() => { props.startRestTimer(60) }}>
+                    <Text style={isLightMode? styles.timePresetText_light : styles.timePresetText_dark}>1:00</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.timeButton} onPress={() => { props.startRestTimer(120) }}>
-                      <Text style={styles.timePresetText}>2:00</Text>
+                    <TouchableOpacity style={isLightMode? styles.timeButton_light : styles.timeButton_dark} onPress={() => { props.startRestTimer(120) }}>
+                      <Text style={isLightMode? styles.timePresetText_light : styles.timePresetText_dark}>2:00</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.timeButton} onPress={() => { props.startRestTimer(180) }}>
-                      <Text style={styles.timePresetText}>3:00</Text>
+                    <TouchableOpacity style={isLightMode? styles.timeButton_light : styles.timeButton_dark} onPress={() => { props.startRestTimer(180) }}>
+                      <Text style={isLightMode? styles.timePresetText_light : styles.timePresetText_dark}>3:00</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.timeButton} onPress={() => { props.startRestTimer(240) }}>
-                      <Text style={styles.timePresetText}>4:00</Text>
+                    <TouchableOpacity style={isLightMode? styles.timeButton_light : styles.timeButton_dark} onPress={() => { props.startRestTimer(240) }}>
+                      <Text style={isLightMode? styles.timePresetText_light : styles.timePresetText_dark}>4:00</Text>
                     </TouchableOpacity>
                   </View>
                 )
               else
                 return (
                   <View>
-                    <Text style={styles.remainingTime}>{props.formatSeconds(remainingTime)}</Text>
-                    <Text style={styles.restDuration}>{props.formatSeconds(props.restDuration)}</Text>
+                    <Text style={isLightMode? styles.remainingTime_light : styles.remainingTime_dark}>{props.formatSeconds(remainingTime)}</Text>
+                    <Text style={isLightMode? styles.restDuration_light : styles.restDuration_dark}>{props.formatSeconds(props.restDuration)}</Text>
                   </View>
                 )
               }}
@@ -94,13 +95,13 @@ export default function RestTimer(props) {
               width: '100%'
             }}>
               <View style={{flex: 1,}}>
-                <TouchableOpacity style={styles.changeTimeButton} onPress={() => { props.incrementRestTimer(-10) }}>
-                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>-10</Text>
+                <TouchableOpacity style={isLightMode? styles.changeTimeButton_light : styles.changeTimeButton_dark} onPress={() => { props.incrementRestTimer(-10) }}>
+                  <Text style={[{fontSize: 16, fontWeight: 'bold'}, isLightMode? null : {color: "#aaa"}]}>-10</Text>
                 </TouchableOpacity>
               </View>
               <View style={{flex: 1,}}>
-                <TouchableOpacity style={styles.changeTimeButton} onPress={() => { props.incrementRestTimer(10) }}>
-                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>+10</Text>
+                <TouchableOpacity style={isLightMode? styles.changeTimeButton_light : styles.changeTimeButton_dark} onPress={() => { props.incrementRestTimer(10) }}>
+                  <Text style={[{fontSize: 16, fontWeight: 'bold'}, isLightMode? null : {color: "#aaa"}]}>+10</Text>
                 </TouchableOpacity>
               </View>
               <View style={{flex: 1,}}>
@@ -130,50 +131,103 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
 
-  xmarkButton: {
+  xmarkButton_light: {
     backgroundColor: 'rgba(0,0,0,0.1)',
-    padding: 2,
+    padding: 4,
     borderRadius: 8
   },
 
-  title: {
+  xmarkButton_dark: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    padding: 4,
+    borderRadius: 8,
+  },
+
+  title_light: {
     fontWeight: 'bold',
     fontSize: 16
   },
 
-  timePresetText: {
+  title_dark: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: 'white'
+  },
+
+  timePresetText_light: {
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 16
   },
 
-  timeButton: {
+  timePresetText_dark: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: 'white'
+  },
+
+  timeButton_light: {
     backgroundColor: 'rgba(0,0,0,0.08)',
     padding: 5,
     marginBottom: 5,
     borderRadius: 10
   },
 
-  remainingTime: {
+  timeButton_dark: {
+    backgroundColor: 'rgba(255,255,255,0.16)',
+    padding: 5,
+    marginBottom: 5,
+    borderRadius: 10
+  },
+
+  remainingTime_light: {
     textAlign: 'center',
     fontSize: 64,
     marginTop: -10,
     fontVariant: ['tabular-nums']
   },
 
-  restDuration: {
+  remainingTime_dark: {
+    textAlign: 'center',
+    fontSize: 64,
+    marginTop: -10,
+    fontVariant: ['tabular-nums'],
+    color: 'white'
+  },
+
+  restDuration_light: {
     textAlign: 'center',
     fontSize: 28,
     color: '#919191',
     fontVariant: ['tabular-nums']
   },
 
-  descriptionText: {
+  restDuration_dark: {
+    textAlign: 'center',
+    fontSize: 28,
+    color: '#aaa',
+    fontVariant: ['tabular-nums']
+  },
+
+  descriptionText_light: {
     textAlign: 'center'
   },
 
-  card: {
+  descriptionText_dark: {
+    textAlign: 'center',
+    color: 'white'
+  },
+
+  card_light: {
     backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 20,
+    width: '90%'
+  },
+
+  card_dark: {
+    backgroundColor: '#111',
     padding: 15,
     borderRadius: 20,
     width: '90%'
@@ -186,8 +240,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
-  changeTimeButton: {
+  changeTimeButton_light: {
     backgroundColor: 'rgba(0,0,0,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginHorizontal: 5,
+    borderRadius: 8
+  },
+
+  changeTimeButton_dark: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,

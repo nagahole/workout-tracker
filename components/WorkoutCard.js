@@ -2,6 +2,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import HelperFunctions from "../classes/HelperFunctions";
 
 export default function WorkoutCard(props) {
+  let isLightMode = () => HelperFunctions.isLightMode();
+
   let workout = props.workout;
 
   let date = new Date(workout.date);
@@ -14,20 +16,20 @@ export default function WorkoutCard(props) {
   year = year === new Date(Date.now()).getFullYear()? '' : year.toString() + ' ';
 
   return (
-    <TouchableOpacity disabled={props.onPress === null? true : false} style={styles.card} onPress={() => { props.onPress() }}>
-      <Text style={styles.workoutName}>{workout.name}</Text>
+    <TouchableOpacity disabled={props.onPress === null? true : false} style={isLightMode()? styles.card_light : styles.card_dark} onPress={() => { props.onPress() }}>
+      <Text style={isLightMode()? styles.workoutName_light : styles.workoutName_dark}>{workout.name}</Text>
       <View style={{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between'
       }}>
-        <Text style={styles.workoutDate}>{dayOfTheWeek}, {day} {month} {year}</Text>
-        <Text style={styles.workoutDate}>{time}</Text>
+        <Text style={isLightMode()? styles.workoutDate_light : styles.workoutDate_dark}>{dayOfTheWeek}, {day} {month} {year}</Text>
+        <Text style={isLightMode()? styles.workoutDate_light : styles.workoutDate_dark}>{time}</Text>
       </View>
       
       {
         workout.notes !== ''? 
-          <Text style={styles.workoutNotes}><FontAwesomeIcon icon="fa-regular fa-note-sticky"/> {item.workout.notes}</Text>
+          <Text style={isLightMode()? styles.workoutNotes_light : styles.workoutNotes_light}><FontAwesomeIcon icon="fa-regular fa-note-sticky"/> {item.workout.notes}</Text>
           : null
       }
       <View
@@ -37,8 +39,8 @@ export default function WorkoutCard(props) {
           justifyContent: 'space-between'
         }}
       >
-        <Text style={styles.workoutHeading}>Exercise</Text>
-        <Text style={styles.workoutHeading}>Best Set</Text>
+        <Text style={isLightMode()? styles.workoutHeading_light : styles.workoutHeading_dark}>Exercise</Text>
+        <Text style={isLightMode()? styles.workoutHeading_light : styles.workoutHeading_dark}>Best Set</Text>
       </View>
       
       {
@@ -63,8 +65,8 @@ export default function WorkoutCard(props) {
               }}
               key={i}
             >
-              <Text style={styles.workoutExerciseText}>{string}</Text>
-              <Text style={styles.workoutExerciseText}>{`${bestSet.weight} kg × ${bestSet.reps}`}</Text>
+              <Text style={isLightMode()? styles.workoutExerciseText_light : styles.workoutExerciseText_dark}>{string}</Text>
+              <Text style={isLightMode()? styles.workoutExerciseText_light : styles.workoutExerciseText_dark}>{`${bestSet.weight} kg × ${bestSet.reps}`}</Text>
             </View>
           )
         })
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  card: {
+  card_light: {
     padding: 15,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
@@ -90,50 +92,111 @@ const styles = StyleSheet.create({
     marginBottom: 14
   },
 
-  workoutName: {
+  card_dark: {
+    padding: 15,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+    borderRadius: 15,
+    marginBottom: 14
+  },
+
+  workoutName_light: {
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 10
   },
 
-  workoutDate: {
+  workoutName_dark: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 10,
+    color: 'white'
+  },
+
+  workoutDate_light: {
     color: '#515151',
     fontSize: 16,
     marginBottom: 10
   },
 
-  workoutNotes: {
+  workoutDate_dark: {
+    color: '#aaa',
+    fontSize: 16,
+    marginBottom: 10
+  },
+
+  workoutNotes_light: {
     fontSize: 15,
     marginBottom: 10
   },
 
-  workoutHeading: {
+  workoutNotes_dark: {
+    fontSize: 15,
+    marginBottom: 10,
+    color: 'white'
+  },
+
+  workoutHeading_light: {
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 5
   },
 
-  workoutExerciseText: {
+  workoutHeading_dark: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
+    color: 'white',
+  },
+
+  workoutExerciseText_light: {
     color: "#4f4f4f",
     fontSize: 16,
     marginBottom: 3
   },
 
-  h1: {
+  workoutExerciseText_dark: {
+    color: "#aaa",
+    fontSize: 16,
+    marginBottom: 3
+  },
+
+  h1_light: {
     fontSize: 32,
     marginBottom: 25,
     fontWeight: 'bold'
   },
 
-  h2: {
+  h2_light: {
     fontSize: 24,
     marginBottom: 22,
     fontWeight: 'bold'
   },
 
-  h3: {
+  h3_light: {
     fontSize: 16,
     marginBottom: 18,
     fontWeight: 'bold'
+  },
+
+  h1_dark: {
+    fontSize: 32,
+    marginBottom: 25,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  h2_dark: {
+    fontSize: 24,
+    marginBottom: 22,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  h3_dark: {
+    fontSize: 16,
+    marginBottom: 18,
+    fontWeight: 'bold',
+    color: 'white'
   }
 });

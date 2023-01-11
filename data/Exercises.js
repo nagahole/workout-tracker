@@ -253,7 +253,6 @@ export const Exercises = {
   sideBendCable: new Exercise("Side Bend (Cable)"),
   sideBendDumbbell: new Exercise("Side Bend (Dumbbell)"),
   sidePlank: new Exercise("Side Plank"),
-  //ADD SINGLE ARM CABLE ROW
   singleLegBridge: new Exercise("Single Leg Bridge"),
   sitUp: new Exercise("Sit Up"),
   skating: new Exercise("Skating"),

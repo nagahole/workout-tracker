@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export default function ChartsScreen({route, navigation}) {
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   const [data,] = useState(function () {
     let obj = HelperFunctions.getOneRepMaxFromEachWorkout(route.params.exercise);
     let res = [];
@@ -46,7 +48,7 @@ export default function ChartsScreen({route, navigation}) {
   }())
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isLightMode? null : {backgroundColor: '#111'} ]}>
       <ScrollView 
         contentContainerStyle={styles.contentContainer}
       >
@@ -62,7 +64,7 @@ export default function ChartsScreen({route, navigation}) {
             >
               <FontAwesomeIcon style={{color: "#58A5F8"}} size={24} icon="fa-solid fa-circle-info" />
             </View>
-            <Text style={styles.noteText}>Please complete this exercise at least twice across two different workouts to see your chart</Text>
+            <Text style={isLightMode? styles.noteText_light : styles.noteText_dark }>Please complete this exercise at least twice across two different workouts to see your chart</Text>
           </View>
         :
           <View>
@@ -90,7 +92,8 @@ export default function ChartsScreen({route, navigation}) {
                       stroke: "black",
                       fontSize: 12,
                       marginBlock: 50,
-                      angle: -60
+                      angle: -60,
+                      fill: isLightMode? '#717171' : '#aaa',
                     }
                   }}
                 />
@@ -103,7 +106,8 @@ export default function ChartsScreen({route, navigation}) {
                       letterSpacing: "1px",
                       stroke: "black",
                       fontSize: 12,
-                      marginBlock: 50
+                      marginBlock: 50,
+                      fill: isLightMode? '#717171' : '#aaa'
                     }
                   }}
                   tickFormat={(tick) => {
@@ -139,7 +143,7 @@ export default function ChartsScreen({route, navigation}) {
                   size={3}
                 />
                 <VictoryScatter
-                  style={{data: {fill: 'white'}}}
+                  style={{data: {fill: isLightMode? 'white' : 'black'}}}
                   data={data}
                   size={1}
                 />
@@ -177,9 +181,15 @@ const styles = StyleSheet.create({
     borderRadius: 15
   },
 
-  noteText: {
+  noteText_light: {
     fontSize: 18,
     textAlign: 'center',
     color: "#313131"
+  },
+
+  noteText_dark: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: "#aaa"
   }
 });

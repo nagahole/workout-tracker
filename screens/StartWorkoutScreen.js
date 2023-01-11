@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useEffect } from "react";
-import { Button, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -18,9 +18,10 @@ export default function StartWorkoutScreen({route, navigation}) {
 
   const dispatch = useDispatch();
 
-  const theme = useSelector(state => state.theme);
   const templates = useSelector(state => state.templates);
   const workouts = useSelector(state => state.workouts);
+
+  const isLightMode = HelperFunctions.isLightMode();
 
   function startWorkout(template = new WorkoutTemplate("New Workout", [])) {
     navigation.navigate("Workout", { 
@@ -83,14 +84,14 @@ export default function StartWorkoutScreen({route, navigation}) {
 
   function renderTemplate(wt, i, editable = false) {
     return (
-      <TouchableOpacity style={styles.card} key={i} onPress={() => { startWorkout(wt) }}>
+      <TouchableOpacity style={isLightMode? styles.card_light : styles.card_dark} key={i} onPress={() => { startWorkout(wt) }}>
         <View style={{
           width: '100%',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between'
         }}>
-          <Text style={[styles.h3, {marginBottom: 8}]}>{wt.name}</Text>
+          <Text style={[isLightMode? styles.h3_light : styles.h3_dark, {marginBottom: 8}]}>{wt.name}</Text>
           {
             !editable? null :
             <TouchableOpacity onPress={() => { editTemplate(wt, i) }}>
@@ -105,7 +106,7 @@ export default function StartWorkoutScreen({route, navigation}) {
               <Text key={j} style={{
                 fontSize: 15,
                 marginBottom: 3,
-                color: '#515151'
+                color: isLightMode? '#515151' : '#aaa'
               }}>{we.sets.length} × {we.exercise.name}</Text>
             )
           })
@@ -115,19 +116,18 @@ export default function StartWorkoutScreen({route, navigation}) {
   }
 
   return (
-    <View style={{
+    <View style={[{
         flex: 1,
         paddingTop: insets.top,
         paddingLeft: insets.left,
         paddingRight: insets.right,
-        backgroundColor: theme === 'light'? 'transparent' : '#2B3135'
-      }}
+      }, isLightMode? null : { backgroundColor: '#111' }]}
     >
       <ScrollView 
         contentContainerStyle={styles.scrollviewContainer}
       >
-        <Text style={styles.h1}>Start Workout</Text>
-        <Text style={styles.h3}>Quick Start</Text>
+        <Text style={isLightMode? styles.h1_light : styles.h1_dark}>Start Workout</Text>
+        <Text style={isLightMode? styles.h3_light : styles.h3_dark}>Quick Start</Text>
         <TouchableOpacity 
           style={styles.startWorkoutButton}
           onPress={() => { startWorkout() }}
@@ -142,7 +142,7 @@ export default function StartWorkoutScreen({route, navigation}) {
             width: '100%',
           }}
         >
-          <Text style={styles.h2}>Templates</Text>
+          <Text style={isLightMode? styles.h2_light : styles.h2_dark}>Templates</Text>
           <TouchableOpacity 
             style={{
               backgroundColor: '#58A5F855',
@@ -157,11 +157,11 @@ export default function StartWorkoutScreen({route, navigation}) {
           </TouchableOpacity>
         </View>
         
-        <Text style={styles.h3}>My Templates</Text>
+        <Text style={isLightMode? styles.h3_light : styles.h3_dark}>My Templates</Text>
         {
           templates.map((wt,i) => renderTemplate(wt, i, true))
         }
-        <Text style={styles.h3}>Example Templates</Text>
+        <Text style={isLightMode? styles.h3_light : styles.h3_dark}>Example Templates</Text>
         {
           WorkoutTemplates.map((wt, i) => renderTemplate(wt, i))
         }
@@ -177,9 +177,18 @@ const styles = StyleSheet.create({
     padding: 20
   },
 
-  card: {
+  card_light: {
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
+    padding: 15,
+    width: '100%',
+    marginBottom: 15,
+    borderRadius: 15
+  },
+
+  card_dark: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
     padding: 15,
     width: '100%',
     marginBottom: 15,
@@ -201,21 +210,42 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
 
-  h1: {
+  h1_light: {
     fontSize: 32,
     marginBottom: 25,
     fontWeight: 'bold'
   },
 
-  h2: {
+  h2_light: {
     fontSize: 24,
     marginBottom: 22,
     fontWeight: 'bold'
   },
 
-  h3: {
+  h3_light: {
     fontSize: 16,
     marginBottom: 18,
     fontWeight: 'bold'
+  },
+
+  h1_dark: {
+    fontSize: 32,
+    marginBottom: 25,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+
+  h2_dark: {
+    fontSize: 24,
+    marginBottom: 22,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+
+  h3_dark: {
+    fontSize: 16,
+    marginBottom: 18,
+    fontWeight: 'bold',
+    color: 'white',
   }
 });

@@ -1,10 +1,13 @@
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import HelperFunctions from "../../classes/HelperFunctions";
 
 export default function WorkoutsPerWeek(props) {
 
   const workouts = useSelector(state => state.workouts);
+
+  const isLightMode = HelperFunctions.isLightMode();
 
   function getPreviousMonday() {
     let date = new Date();
@@ -58,9 +61,9 @@ export default function WorkoutsPerWeek(props) {
   let data = workoutsPerWeek.map((val, i) => ({x: mondays[i], y: workoutsPerWeek[i]}) );
 
   return (
-    <TouchableOpacity disabled={true} style={styles.card}>
-      <Text style={styles.h3}>Workouts Per Week</Text>
-      <Text style={{color: '#515151', fontSize: 16}}>Activity</Text>
+    <TouchableOpacity disabled={true} style={isLightMode? styles.card_light : styles.card_dark}>
+      <Text style={isLightMode? styles.h3_light : styles.h3_dark}>Workouts Per Week</Text>
+      <Text style={{color: isLightMode? '#515151' : '#aaa', fontSize: 16}}>Activity</Text>
       <VictoryChart
         theme={VictoryTheme.material}
         domainPadding={{x: 20}}
@@ -77,6 +80,7 @@ export default function WorkoutsPerWeek(props) {
             grid: { stroke: "transparent" },
             tickLabels: {
               letterSpacing: "1px",
+              fill: isLightMode? '#717171' : '#aaa'
             }
           }}
           tickFormat={tick => {
@@ -93,11 +97,14 @@ export default function WorkoutsPerWeek(props) {
         <VictoryAxis 
           tickCount={2} 
           dependentAxis
-          tickFormat={ tick => Math.round(tick) }
+          tickFormat={ tick => { 
+            return tick % 1 !== 0? null : Math.round(tick);
+          }}
           style={{
             grid: { stroke: "lightgrey" },
             tickLabels: {
-              fontSize: 14
+              fontSize: 14,
+              fill: isLightMode? '#717171' : '#aaa'
             }
           }}
         />
@@ -115,10 +122,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  card: {
+  card_light: {
     padding: 15,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 20,
+    marginBottom: 14
+  },
+
+  card_dark: {
+    padding: 15,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
     borderRadius: 20,
     marginBottom: 14
   },
@@ -152,21 +167,42 @@ const styles = StyleSheet.create({
     marginBottom: 3
   },
 
-  h1: {
+  h1_light: {
     fontSize: 32,
     marginBottom: 25,
     fontWeight: 'bold'
   },
 
-  h2: {
+  h2_light: {
     fontSize: 24,
     marginBottom: 22,
     fontWeight: 'bold'
   },
 
-  h3: {
+  h3_light: {
     fontSize: 16,
     marginBottom: 8,
     fontWeight: 'bold'
+  },
+
+  h1_dark: {
+    fontSize: 32,
+    marginBottom: 25,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  h2_dark: {
+    fontSize: 24,
+    marginBottom: 22,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  h3_dark: {
+    fontSize: 16,
+    marginBottom: 8,
+    fontWeight: 'bold',
+    color: 'white'
   }
 });

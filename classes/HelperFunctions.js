@@ -67,7 +67,13 @@ Number.prototype.nth = function() {
 
 class HelperFunctions {
 
+  static getTheme = () => useSelector(state => state.theme);
+
   static getWorkouts = () => useSelector(state => state.workouts );
+
+  static isLightMode() {
+    return this.getTheme() === 'light';
+  }
 
   static calculateOneRepMax(weightAndReps) {
     let weight = weightAndReps.weight;

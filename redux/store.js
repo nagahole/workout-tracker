@@ -16,3 +16,5 @@ const persistedReducer = persistReducer(persistConfig, workoutReducer);
 
 export const Store = createStore(persistedReducer, applyMiddleware(thunk));
 export const persistor = persistStore(Store);
+
+export default Store

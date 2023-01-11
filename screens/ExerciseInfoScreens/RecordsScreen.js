@@ -5,12 +5,14 @@ import HelperFunctions from "../../classes/HelperFunctions";
 
 export default function RecordsScreen({route, navigation}) {
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   const [topSets,] = useState(HelperFunctions.getTopSets(route.params.exercise, 12));
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isLightMode? null : {backgroundColor: '#111'} ]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.subheading}>PERSONAL RECORDS</Text>
+        <Text style={isLightMode? styles.subheading_light : styles.subheading_dark}>PERSONAL RECORDS</Text>
         <View style={{
           display: 'flex',
           flexDirection: 'row',
@@ -20,10 +22,12 @@ export default function RecordsScreen({route, navigation}) {
         }}>
           <Text style={{
             fontWeight: 'bold',
-            fontSize: 20
+            fontSize: 20,
+            color: isLightMode? 'black' : 'white'
           }}>1RM</Text>
           <Text style={{
-            fontSize: 20
+            fontSize: 20,
+            color: isLightMode? 'black' : 'white'
           }}>{topSets.length <= 0? "-/-" : Math.round(HelperFunctions.calculateOneRepMax(topSets[0].set)).toLocaleString("en-US")} kg</Text>
         </View>
         <View style={{
@@ -32,9 +36,9 @@ export default function RecordsScreen({route, navigation}) {
           alignItems: 'center',
           justifyContent: 'space-around'
         }}>
-          <Text style={[{flex: 1, textAlign: 'center'}, styles.subheading]}>POS</Text>
-          <Text style={[{flex: 3, textAlign: 'center'}, styles.subheading]}>BEST PERFORMANCE</Text>
-          <Text style={[{flex: 2, textAlign: 'center'}, styles.subheading]}>ESTIMATED 1RM</Text>
+          <Text style={[{flex: 1, textAlign: 'center'}, isLightMode? styles.subheading_light : styles.subheading_dark]}>POS</Text>
+          <Text style={[{flex: 3, textAlign: 'center'}, isLightMode? styles.subheading_light : styles.subheading_dark]}>BEST PERFORMANCE</Text>
+          <Text style={[{flex: 2, textAlign: 'center'}, isLightMode? styles.subheading_light : styles.subheading_dark]}>ESTIMATED 1RM</Text>
         </View>
         {
           topSets.map((obj, i) => {
@@ -52,18 +56,19 @@ export default function RecordsScreen({route, navigation}) {
                   flex: 1, 
                   textAlign: 'center', 
                   fontWeight: 'bold', 
-                  fontSize: 16
+                  fontSize: 16,
+                  color: isLightMode? 'black' : 'white'
                   }}
                 >{i + 1}</Text>
                 <View style={{
                   flex: 3,
                   display: 'flex'
                 }}>
-                  <Text style={{textAlign: 'center', fontSize: 16}}>{`${obj.set.weight} kg (x${obj.set.reps})`}</Text>
-                  <Text style={{textAlign: 'center', fontSize: 12, letterSpacing: 1, color: "#919191"}}>{new Date(obj.date).toLocaleDateString('en-NZ')}</Text>
+                  <Text style={{textAlign: 'center', fontSize: 16, color: isLightMode? 'black' : 'white'}}>{`${obj.set.weight} kg (x${obj.set.reps})`}</Text>
+                  <Text style={{textAlign: 'center', fontSize: 12, letterSpacing: 1, color: "#919191"}}>{new Date(obj.date).toLocaleDateString()}</Text>
                 </View>
                 
-                <Text style={{flex: 2, textAlign: 'center', fontSize: 16}}>{Math.round(HelperFunctions.calculateOneRepMax(obj.set)).toLocaleString('en-US')} kg</Text>
+                <Text style={{flex: 2, textAlign: 'center', fontSize: 16, color: isLightMode? 'black' : 'white'}}>{Math.round(HelperFunctions.calculateOneRepMax(obj.set)).toLocaleString('en-US')} kg</Text>
               </View>
             )
           })
@@ -82,8 +87,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  subheading: {
+  subheading_light: {
     color: "#515151",
+    paddingVertical: 10
+  },
+
+  subheading_dark: {
+    color: "#aaa",
     paddingVertical: 10
   }
 });

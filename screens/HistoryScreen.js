@@ -23,6 +23,8 @@ export default function HistoryScreen({navigation}) {
   const [workoutInfoOpen, setWorkoutInfoOpen] = useState(false);
   const [workoutItemDisplayed, setWorkoutItemDisplayed] = useState({});
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   useEffect(() => {
     let _workouts = structuredClone(workouts)
   _workouts = HelperFunctions.getWorkoutsSortedByDate(_workouts);
@@ -33,7 +35,7 @@ export default function HistoryScreen({navigation}) {
   function renderHeader() {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.h1}>History</Text>
+        <Text style={isLightMode? styles.h1_light : styles.h1_dark}>History</Text>
       </View>
     )
   }
@@ -77,12 +79,12 @@ export default function HistoryScreen({navigation}) {
   })
 
   return (
-    <View style={{
+    <View style={[{
       flex: 1,
       paddingTop: insets.top,
       paddingLeft: insets.left,
       paddingRight: insets.right,
-    }}>
+    }, isLightMode? null : {backgroundColor: "#111"} ]}>
       <Modal
         visible={workoutInfoOpen}
         animationType='fade'
@@ -147,21 +149,42 @@ const styles = StyleSheet.create({
     marginBottom: 3
   },
 
-  h1: {
+  h1_light: {
     fontSize: 32,
     marginBottom: 25,
     fontWeight: 'bold'
   },
 
-  h2: {
+  h2_light: {
     fontSize: 24,
     marginBottom: 22,
     fontWeight: 'bold'
   },
 
-  h3: {
+  h3_light: {
     fontSize: 16,
     marginBottom: 18,
     fontWeight: 'bold'
+  },
+
+  h1_dark: {
+    fontSize: 32,
+    marginBottom: 25,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  h2_dark: {
+    fontSize: 24,
+    marginBottom: 22,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  h3_dark: {
+    fontSize: 16,
+    marginBottom: 18,
+    fontWeight: 'bold',
+    color: 'white'
   }
 });

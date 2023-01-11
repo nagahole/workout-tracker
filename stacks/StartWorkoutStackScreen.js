@@ -12,7 +12,7 @@ export default function StartWorkoutStackScreen() {
       <StartWorkoutStack.Screen name="Back" component={StartWorkoutScreen} options={{headerShown: false}}/>
       <StartWorkoutStack.Screen name="Workout" component={WorkoutScreen} options={{headerShown: false, gestureEnabled: false}}/>
       <StartWorkoutStack.Screen name="Add Exercise" component={ExerciseSelectScreen} options={{headerShown: true}}/>
-      <StartWorkoutStack.Screen name="Finished Workout" component={FinishedWorkoutScreen} options={{headerShown: false}}/>
+      <StartWorkoutStack.Screen name="Finished Workout" component={FinishedWorkoutScreen} options={{headerShown: false, gestureEnabled: false}}/>
     </StartWorkoutStack.Navigator>
   );
 }

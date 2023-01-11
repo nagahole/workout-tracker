@@ -10,7 +10,8 @@ import HelperFunctions from "../classes/HelperFunctions";
 import { withNavigation } from "react-navigation";
 import Constants from 'expo-constants';
 import structuredClone from 'realistic-structured-clone';
-
+import Store from "../redux/store";
+import { connect } from "react-redux";
 
 const RESTTIMERBUTTONWIDTH = 60;
 
@@ -20,6 +21,8 @@ class WorkoutScreen extends React.Component {
 
     let workoutExercises = [];
     let template = structuredClone(props.route.params.template);
+
+    this.isLightMode = () => this.props.theme === 'light';
 
     if (template != null && template != undefined) {
       for(let workoutExercise of template.workoutExercises) {
@@ -162,13 +165,13 @@ class WorkoutScreen extends React.Component {
     return (
       <View style={styles.exerciseCard}>
         <Text style={styles.exerciseTitle}>{item.exercise.name}</Text>
-        <View style={styles.cardRow}>
+        <View style={this.isLightMode()? styles.cardRow_light : styles.cardRow_dark}>
           <View style={styles.col1}></View>
           <View style={styles.col2}>
-            <Text style={styles.cardHeader}>kg</Text>
+            <Text style={this.isLightMode()? styles.cardHeader_light : styles.cardHeader_dark}>kg</Text>
           </View>
           <View style={styles.col3}>
-            <Text style={styles.cardHeader}>Reps</Text>
+            <Text style={this.isLightMode()? styles.cardHeader_light : styles.cardHeader_dark}>Reps</Text>
           </View>
           <View style={styles.col4}></View>
         </View>
@@ -190,7 +193,7 @@ class WorkoutScreen extends React.Component {
             };
 
             const renderRightActions = progress => (
-              <View style={{ width: Dimensions.get('window').width, flexDirection: I18nManager.isRTL? 'row-reverse' : 'row' }}>
+              <View style={{ width: Dimensions.get('window').width, flexDirection: 'row' }}>
                 {renderRightAction('Delete', '#dd2c00', 64, progress)}
               </View>
             );
@@ -205,15 +208,15 @@ class WorkoutScreen extends React.Component {
                 }}
                 renderRightActions={renderRightActions}
               >
-                <View style={[styles.cardRow, (val.completed && !this.isEditWorkoutMode())? { backgroundColor: 'rgb(130, 255, 130)' } : null ]}>
+                <View style={[this.isLightMode()? styles.cardRow_light : styles.cardRow_dark, (val.completed && !this.isEditWorkoutMode())? { backgroundColor: this.isLightMode()? 'rgb(130, 255, 130)' : 'rgba(50, 255, 50, 0.5)' } : null ]}>
                   <View style={styles.col1}>
-                    <Text style={styles.setNoText}>{i + 1}</Text>
+                    <Text style={this.isLightMode()? styles.setNoText_light : styles.setNoText_dark}>{i + 1}</Text>
                   </View>
                   <View style={[styles.col2, {paddingHorizontal: 5}]}>
                     {
                       this.isTemplateMode()? null :
                       <TextInput 
-                        style={[styles.weightAndRepsInput, (val.completed && !this.isEditWorkoutMode())? {backgroundColor: 'transparent'} : null ]}
+                        style={[this.isLightMode()? styles.weightAndRepsInput_light : styles.weightAndRepsInput_dark, (val.completed && !this.isEditWorkoutMode())? {backgroundColor: 'transparent'} : null ]}
                         keyboardType='numeric'
                         value={val.weight === -1337? '' : val.weight.toString()}
                         onChangeText={text => {
@@ -234,7 +237,7 @@ class WorkoutScreen extends React.Component {
                     {
                       this.isTemplateMode() ? null :
                       <TextInput 
-                        style={[styles.weightAndRepsInput, (val.completed && !this.isEditWorkoutMode())? {backgroundColor: 'transparent'} : null ]}
+                        style={[this.isLightMode()? styles.weightAndRepsInput_light : styles.weightAndRepsInput_dark, (val.completed && !this.isEditWorkoutMode())? {backgroundColor: 'transparent'} : null ]}
                         keyboardType='number-pad'
                         value={val.reps === -1337? ''  : val.reps.toString()}
                         onChangeText={text => {
@@ -274,7 +277,8 @@ class WorkoutScreen extends React.Component {
                       <FontAwesomeIcon 
                         icon='fa-solid fa-square-check' 
                         size={35} 
-                        color={(val.completed && !this.isEditWorkoutMode())? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.1)"}/>
+                        color={(val.completed && !this.isEditWorkoutMode())? 
+                          "rgba(255,255,255,0.7)" : (this.isLightMode()? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)")}/>
                     }
                   </TouchableOpacity>
                 </View>
@@ -474,10 +478,11 @@ class WorkoutScreen extends React.Component {
   renderCancelButton() {
     return (
       <TouchableOpacity 
-        style={styles.restTimerButtonContainer}
+        style={this.isLightMode()? styles.restTimerButtonContainer_light : styles.restTimerButtonContainer_dark}
         onPress={() => { this.cancelEditWorkoutButton() } }
       >
-        <FontAwesomeIcon icon="fa-solid fa-xmark" size={18}/>
+        <FontAwesomeIcon icon="fa-solid fa-xmark" size={18} 
+          color={this.isLightMode()? "black" : "white"}/>
       </TouchableOpacity>
     )
   }
@@ -485,10 +490,12 @@ class WorkoutScreen extends React.Component {
   renderCancelEditTemplateButton() {
     return (
       <TouchableOpacity 
-        style={[styles.restTimerButtonContainer, { marginLeft: -113 } ]}
+        style={[this.isLightMode()? styles.restTimerButtonContainer_light : styles.restTimerButtonContainer_dark, 
+          { marginLeft: -113 } ]}
         onPress={() => {this.cancelEditTemplateButton()} }
       >
-        <FontAwesomeIcon icon="fa-solid fa-xmark" size={18}/>
+        <FontAwesomeIcon icon="fa-solid fa-xmark" size={18}
+          color={this.isLightMode()? "black" : "white"}/>
       </TouchableOpacity>
     )
   }
@@ -503,12 +510,12 @@ class WorkoutScreen extends React.Component {
 
     return (
       <View
-        style={{
+        style={[{
           flex: 1,
           paddingTop: Constants.statusBarHeight
           //paddingLeft: insets.left,
           //paddingRight: insets.right,
-        }}
+        }, this.isLightMode()? null : { backgroundColor: '#111'} ]}
       >
         <Modal
           visible={this.state.restTimerOpen}
@@ -533,7 +540,7 @@ class WorkoutScreen extends React.Component {
             skipRestTimer={() => { this.skipRestTimer() }}
           />
         </Modal>
-        <View style={styles.fixedHeader}>
+        <View style={this.isLightMode()? styles.fixedHeader_light : styles.fixedHeader_dark}>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             {
               (this.isTemplateMode() || this.isEditWorkoutMode())? (
@@ -543,7 +550,7 @@ class WorkoutScreen extends React.Component {
                   this.renderCancelEditTemplateButton()
               ) : 
               <TouchableOpacity 
-                style={[styles.restTimerButtonContainer, 
+                style={[this.isLightMode()? styles.restTimerButtonContainer_light : styles.restTimerButtonContainer_dark, 
                 this.state.restTimerInfo.restTimerRunning? { width: RESTTIMERBUTTONWIDTH } : null]} 
                 onPress={() => { this.openRestTimer() }}>
                 <Animated.View style={this.state.restTimerInfo.restTimerRunning? {
@@ -564,7 +571,8 @@ class WorkoutScreen extends React.Component {
                       }}
                     >{this.formatSeconds(this.state.restTimerInfo.restCountdown, 1)}</Text>
                   </View>
-                  : <FontAwesomeIcon icon="fa-solid fa-stopwatch-20" size={22}/>
+                  : <FontAwesomeIcon icon="fa-solid fa-stopwatch-20" size={22}
+                      color={this.isLightMode()? "black" : "white"}/>
                 }
               </TouchableOpacity>
             }
@@ -573,7 +581,7 @@ class WorkoutScreen extends React.Component {
           <View style={{flex: this.isTemplateMode()? 0 : 3, justifyContent: 'center', alignItems: 'center'}}>
             {
               this.isTemplateMode() || this.isEditWorkoutMode()? null :
-              <Text style={styles.headerTimeText}>{this.formattedElapsedTime()}</Text>
+              <Text style={this.isLightMode()? styles.headerTimeText_light : styles.headerTimeText_dark}>{this.formattedElapsedTime()}</Text>
             }
           </View>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -587,7 +595,7 @@ class WorkoutScreen extends React.Component {
           ListHeaderComponent={
             <View style={styles.headerContainer}>
               <TextInput 
-                style={styles.title} 
+                style={this.isLightMode()? styles.title_light : styles.title_dark} 
                 defaultValue="New Workout"
                 value={this.state.workoutName}
                 onChangeText={text => {
@@ -599,8 +607,13 @@ class WorkoutScreen extends React.Component {
               {
                 this.isTemplateMode() || this.isEditWorkoutMode() ? null :
                 <>
-                  <Text style={styles.timeText}>{this.formattedElapsedTime()}</Text>
-                  <TextInput style={styles.notes} value={this.state.notes} placeholder="Notes" multiline={true}
+                  <Text style={this.isLightMode()? styles.timeText_light : styles.timeText_dark}>{this.formattedElapsedTime()}</Text>
+                  <TextInput 
+                    style={this.isLightMode()? styles.notes_light : styles.notes_dark} 
+                    value={this.state.notes} 
+                    placeholder="Notes" 
+                    multiline={true}
+                    placeholderTextColor={this.isLightMode()? null : '#aaa'}
                     onChangeText={text => {
                       this.setState({
                         notes: text
@@ -651,10 +664,17 @@ class WorkoutScreen extends React.Component {
   }
 }
 
-export default withNavigation(WorkoutScreen);
+function mapStateToProps(state) {
+  const theme = state.theme;
+  return {
+    theme,
+  };
+}
+
+export default connect(mapStateToProps)(withNavigation(WorkoutScreen));
 
 const styles = StyleSheet.create({
-  fixedHeader: {
+  fixedHeader_light: {
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
     height: 50 + 9999,
@@ -667,8 +687,29 @@ const styles = StyleSheet.create({
     //is this bad practice?
   },
 
-  restTimerButtonContainer: {
+  fixedHeader_dark: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#222",
+    height: 50 + 9999,
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: 'black',
+    marginTop: -9999,
+    paddingTop: 9999
+
+    //is this bad practice?
+  },
+
+  restTimerButtonContainer_light: {
     backgroundColor: "rgba(0,0,0,0.1)",
+    paddingVertical: 6,
+    paddingHorizontal: 11,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+
+  restTimerButtonContainer_dark: {
+    backgroundColor: "rgba(255,255,255,0.2)",
     paddingVertical: 6,
     paddingHorizontal: 11,
     borderRadius: 8,
@@ -712,14 +753,26 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width
   },
 
-  setNoText: {
+  setNoText_light: {
     fontSize: 14
   },
 
-  title: {
+  setNoText_dark: {
+    fontSize: 14,
+    color: 'white'
+  },
+
+  title_light: {
     fontWeight: 'bold',
     fontSize: 24,
     marginBottom: 10,
+  },
+
+  title_dark: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginBottom: 10,
+    color: 'white'
   },
 
   exerciseCard: {
@@ -727,7 +780,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
 
-  cardRow: {
+  cardRow_light: {
     display: 'flex',
     flexDirection: 'row',
     height: 45,
@@ -738,18 +791,44 @@ const styles = StyleSheet.create({
     //TODO: GET THE ACTUAL RIGHT COLOUR
   },
 
-  cardHeader: {
+  cardRow_dark: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: 45,
+    alignItems: 'center',
+    borderColor: 'red',
+    paddingVertical: 3,
+    backgroundColor: '#111'
+  },
+
+  cardHeader_light: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold'
   },
 
-  weightAndRepsInput:{
+  cardHeader_dark: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  weightAndRepsInput_light:{
     backgroundColor: 'rgba(0,0,0,0.08)',
     padding: 5,
     fontSize: 20,
     borderRadius: 8,
     textAlign: 'center'
+  },
+
+  weightAndRepsInput_dark:{
+    backgroundColor: 'rgba(255,255,255,0.16)',
+    padding: 5,
+    fontSize: 20,
+    borderRadius: 8,
+    textAlign: 'center',
+    color: 'white'
   },
 
   col1: {
@@ -782,7 +861,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
 
-  notes: {
+  notes_light: {
     backgroundColor: 'rgba(0,0,0,0.05)',
     fontSize: 16,
     padding: 10,
@@ -791,13 +870,35 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  headerTimeText: {
+  notes_dark: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    fontSize: 16,
+    padding: 10,
+    paddingTop: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+    color: 'white'
+  },
+
+  headerTimeText_light: {
     color: '#717171',
     fontSize: 16,
   },
 
-  timeText: {
+  headerTimeText_dark: {
+    color: '#aaa',
+    fontSize: 16,
+  },
+
+  timeText_light: {
     color: '#717171',
+    fontSize: 16,
+    marginBottom: 20,
+    fontVariant: ['tabular-nums']
+  },
+
+  timeText_dark: {
+    color: '#aaa',
     fontSize: 16,
     marginBottom: 20,
     fontVariant: ['tabular-nums']

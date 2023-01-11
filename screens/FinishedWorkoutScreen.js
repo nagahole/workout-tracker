@@ -16,12 +16,14 @@ export default function FinishedWorkoutScreen({route, navigation}) {
 
   const [workoutInfoOpen, setWorkoutInfoOpen] = useState(false);
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   return (
     <View style={[styles.container, {
       paddingTop: insets.top,
       paddingLeft: insets.left,
       paddingRight: insets.right,
-    }]}>
+    }, isLightMode? null : { backgroundColor: '#111' } ]}>
       <Modal
         visible={workoutInfoOpen}
         animationType='fade'
@@ -35,22 +37,22 @@ export default function FinishedWorkoutScreen({route, navigation}) {
       <View style={styles.headerBar}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
           <TouchableOpacity 
-            style={styles.exitButtonContainer}
+            style={isLightMode? styles.exitButtonContainer_light : styles.exitButtonContainer_dark}
             onPress={() => { navigation.pop(2) } }
           >
-            <FontAwesomeIcon icon="fa-solid fa-xmark" size={18}/>
+            <FontAwesomeIcon icon="fa-solid fa-xmark" size={18} color={isLightMode? 'black' : 'white'}/>
           </TouchableOpacity>
         </View>
         <View style={{flex: 1}}></View>
       </View>
       <View style={styles.starsContainer}>
         <FontAwesomeIcon size={32} style={[styles.yellow, styles.starLeft]} icon="fa-solid fa-star"/>
-        <FontAwesomeIcon size={32} style={[styles.yellow, styles.starMiddle]} icon="fa-solid fa-star"/>
+        <FontAwesomeIcon size={45} style={[styles.yellow, styles.starMiddle]} icon="fa-solid fa-star"/>
         <FontAwesomeIcon size={32} style={[styles.yellow, styles.starRight]} icon="fa-solid fa-star"/>
       </View>
       
-      <Text style={styles.title}>Congratulations!</Text>
-      <Text style={styles.subheading}>You've completed your {workouts.length.nth()} workout</Text>
+      <Text style={isLightMode? styles.title_light : styles.title_dark}>Congratulations!</Text>
+      <Text style={isLightMode? styles.subheading_light : styles.subheading_dark}>You've completed your {workouts.length.nth()} workout</Text>
 
       <ScrollView style={{
         width: Dimensions.get('window').width,
@@ -80,8 +82,16 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
   },
 
-  exitButtonContainer: {
+  exitButtonContainer_light: {
     backgroundColor: "rgba(0,0,0,0.08)",
+    paddingVertical: 6,
+    paddingHorizontal: 11,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+
+  exitButtonContainer_dark: {
+    backgroundColor: "rgba(255,255,255,0.16)",
     paddingVertical: 6,
     paddingHorizontal: 11,
     borderRadius: 8,
@@ -121,28 +131,44 @@ const styles = StyleSheet.create({
   starLeft: {
     height: 30,
     width: 30,
-    transform: [{translateY: 10}, {rotate: "45deg"}] 
+    marginHorizontal: 5,
+    transform: [{translateY: 14}, {rotate: "45deg"}] 
   },
 
   starMiddle: {
     height: 50,
-    width: 75
+    width: 75,
+    marginHorizontal: 5,
   },
 
   starRight: {
     height: 30,
     width: 30,
-    transform: [{translateY: 10}, {rotate: "-45deg"}]
+    marginHorizontal: 5,
+    transform: [{translateY: 14}, {rotate: "-45deg"}]
   },
 
-  title: {
+  title_light: {
     fontSize: 28,
     marginTop: 20,
     marginBottom: 10
   },
 
-  subheading: {
+  title_dark: {
+    color: 'white',
+    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 10
+  },
+
+  subheading_light: {
     fontWeight: '200',
     fontSize: 18
+  },
+
+  subheading_dark: {
+    fontWeight: '200',
+    fontSize: 18,
+    color: 'white'
   }
 });

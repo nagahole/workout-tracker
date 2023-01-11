@@ -5,6 +5,8 @@ import HelperFunctions from "../../classes/HelperFunctions";
 
 export default function HistoryScreen({route, navigation}) {
 
+  const isLightMode = HelperFunctions.isLightMode();
+
   const [workouts, ] = useState(HelperFunctions.getWorkoutsContainingExercise(route.params.exercise));
 
   const DATA = workouts.map((val, i) => ({
@@ -21,20 +23,20 @@ export default function HistoryScreen({route, navigation}) {
     let time = date.getAMPMTime();
 
     return (
-      <View style={styles.card}>
-        <Text style={styles.workoutName}>{item.workout.name}</Text>
+      <View style={isLightMode? styles.card_light : styles.card_dark}>
+        <Text style={isLightMode? styles.workoutName_light : styles.workoutName_dark}>{item.workout.name}</Text>
         <View style={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between'
         }}>
-          <Text style={styles.workoutDate}>{dayOfTheWeek}, {day} {month} {year}</Text>
-          <Text style={styles.workoutDate}>{time}</Text>
+          <Text style={isLightMode? styles.workoutDate_light : styles.workoutDate_dark}>{dayOfTheWeek}, {day} {month} {year}</Text>
+          <Text style={isLightMode? styles.workoutDate_light : styles.workoutDate_dark}>{time}</Text>
         </View>
         
         {
           item.workout.notes !== ''? 
-            <Text style={styles.workoutNotes}><FontAwesomeIcon icon="fa-regular fa-note-sticky"/> {item.workout.notes}</Text>
+            <Text style={isLightMode? styles.workoutNotes_light : styles.workoutName_dark}><FontAwesomeIcon icon="fa-regular fa-note-sticky"/> {item.workout.notes}</Text>
             : null
         }
         <View style={{
@@ -42,8 +44,8 @@ export default function HistoryScreen({route, navigation}) {
           flexDirection: 'row',
           justifyContent: 'space-between'
         }}>
-          <Text style={styles.workoutHeading}>Sets Performed</Text>
-          <Text style={styles.workoutHeading}>1RM</Text>
+          <Text style={isLightMode? styles.workoutHeading_light : styles.workoutHeading_dark}>Sets Performed</Text>
+          <Text style={isLightMode? styles.workoutHeading_light : styles.workoutHeading_dark}>1RM</Text>
         </View>
         
         {
@@ -54,13 +56,13 @@ export default function HistoryScreen({route, navigation}) {
                   display: 'flex',
                   flexDirection: 'row'
                 }} key={j}>
-                  <Text style={[styles.workoutExerciseText, {flex: 1, textAlign: 'left', fontWeight: 'bold'}]}>
+                  <Text style={[isLightMode? styles.workoutExerciseText_light : styles.workoutExerciseText_dark, {flex: 1, textAlign: 'left', fontWeight: 'bold'}]}>
                     {j + 1}
                   </Text>
-                  <Text style={[styles.workoutExerciseText, {flex: 6}]}>
+                  <Text style={[isLightMode? styles.workoutExerciseText_light : styles.workoutExerciseText_dark, {flex: 6}]}>
                     {weightsAndReps.weight} kg × {weightsAndReps.reps}
                   </Text>
-                  <Text style={[styles.workoutExerciseText, {flex: 6, textAlign: 'right'}]}>
+                  <Text style={[isLightMode? styles.workoutExerciseText_light : styles.workoutExerciseText_dark, {flex: 6, textAlign: 'right'}]}>
                     {Math.round(HelperFunctions.calculateOneRepMax(weightsAndReps))}
                   </Text>
                 </View>
@@ -73,7 +75,7 @@ export default function HistoryScreen({route, navigation}) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isLightMode? null : {backgroundColor: '#111'} ]}>
       <FlatList
         data={DATA}
         keyExtractor={item => item.id}
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  card: {
+  card_light: {
     padding: 15,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
@@ -101,50 +103,72 @@ const styles = StyleSheet.create({
     marginBottom: 14
   },
 
-  workoutName: {
+  card_dark: {
+    padding: 15,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 20,
+    marginBottom: 14
+  },
+
+  workoutName_light: {
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 10
   },
 
-  workoutDate: {
+  workoutName_dark: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 10
+  },
+
+  workoutDate_light: {
     color: '#515151',
     fontSize: 16,
     marginBottom: 10
   },
 
-  workoutNotes: {
+  workoutDate_dark: {
+    color: '#aaa',
+    fontSize: 16,
+    marginBottom: 10
+  },
+
+  workoutNotes_light: {
     fontSize: 15,
     marginBottom: 10
   },
 
-  workoutHeading: {
+  workoutNotes_dark: {
+    fontSize: 15,
+    marginBottom: 10,
+    color: 'white',
+  },
+
+  workoutHeading_light: {
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 5
   },
 
-  workoutExerciseText: {
+  workoutHeading_dark: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5
+  },
+
+  workoutExerciseText_light: {
     color: "#4f4f4f",
     fontSize: 16,
     marginBottom: 3
   },
 
-  h1: {
-    fontSize: 32,
-    marginBottom: 25,
-    fontWeight: 'bold'
-  },
-
-  h2: {
-    fontSize: 24,
-    marginBottom: 22,
-    fontWeight: 'bold'
-  },
-
-  h3: {
+  workoutExerciseText_dark: {
+    color: "#aaa",
     fontSize: 16,
-    marginBottom: 18,
-    fontWeight: 'bold'
-  }
+    marginBottom: 3
+  },
 });
