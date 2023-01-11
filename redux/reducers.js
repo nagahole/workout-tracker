@@ -3,7 +3,7 @@ import { ADD_TEMPLATE, ADD_WORKOUT, SET_TEMPLATES, SET_THEME, SET_WORKOUTS } fro
 const initialState = {
   workouts: [],
   templates: [],
-  theme: 'light'
+  theme: 'dark'
 }
 
 function workoutReducer(state = initialState, action) {
