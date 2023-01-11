@@ -10,7 +10,7 @@ export default function RecordsScreen({route, navigation}) {
   const [topSets,] = useState(HelperFunctions.getTopSets(route.params.exercise, 12));
 
   return (
-    <View style={[styles.container, isLightMode? null : {backgroundColor: '#111'} ]}>
+    <View style={[styles.container, isLightMode? null : {backgroundColor: '#202020'} ]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={isLightMode? styles.subheading_light : styles.subheading_dark}>PERSONAL RECORDS</Text>
         <View style={{

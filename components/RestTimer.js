@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
 
   card_dark: {
-    backgroundColor: '#111',
+    backgroundColor: '#202020',
     padding: 15,
     borderRadius: 20,
     width: '90%'

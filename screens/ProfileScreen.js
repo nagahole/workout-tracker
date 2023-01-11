@@ -18,7 +18,7 @@ export default function ProfileScreen({route, navigation}) {
       paddingTop: insets.top,
       paddingLeft: insets.left,
       paddingRight: insets.right,
-    }, isLightMode? null : { backgroundColor: "#111" } ]}>
+    }, isLightMode? null : { backgroundColor: "#202020" } ]}>
       <ScrollView style={styles.scrollview}>
         <Text style={isLightMode? styles.h1_light : styles.h1_dark}>Profile</Text>
         <View style={{

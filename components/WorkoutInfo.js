@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
 
   workoutInfoCard_dark: {
-    backgroundColor: '#111',//'#2B3135',
+    backgroundColor: '#202020',//'#2B3135',
     borderRadius: 20,
     width: '90%'
   },

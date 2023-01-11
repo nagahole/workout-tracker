@@ -515,7 +515,7 @@ class WorkoutScreen extends React.Component {
           paddingTop: Constants.statusBarHeight
           //paddingLeft: insets.left,
           //paddingRight: insets.right,
-        }, this.isLightMode()? null : { backgroundColor: '#111'} ]}
+        }, this.isLightMode()? null : { backgroundColor: '#202020'} ]}
       >
         <Modal
           visible={this.state.restTimerOpen}
@@ -798,7 +798,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: 'red',
     paddingVertical: 3,
-    backgroundColor: '#111'
+    backgroundColor: '#202020'
   },
 
   cardHeader_light: {

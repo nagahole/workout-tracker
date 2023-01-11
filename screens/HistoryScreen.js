@@ -84,7 +84,7 @@ export default function HistoryScreen({navigation}) {
       paddingTop: insets.top,
       paddingLeft: insets.left,
       paddingRight: insets.right,
-    }, isLightMode? null : {backgroundColor: "#111"} ]}>
+    }, isLightMode? null : {backgroundColor: "#202020"} ]}>
       <Modal
         visible={workoutInfoOpen}
         animationType='fade'

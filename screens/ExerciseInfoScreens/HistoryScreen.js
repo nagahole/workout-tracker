@@ -75,7 +75,7 @@ export default function HistoryScreen({route, navigation}) {
   }
 
   return (
-    <View style={[styles.container, isLightMode? null : {backgroundColor: '#111'} ]}>
+    <View style={[styles.container, isLightMode? null : {backgroundColor: '#202020'} ]}>
       <FlatList
         data={DATA}
         keyExtractor={item => item.id}

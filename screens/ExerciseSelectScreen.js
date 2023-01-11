@@ -36,7 +36,7 @@ export default function ExerciseSelectScreen({route, navigation}) {
     <View style={[
       {flex: 1}, 
       route.params.accountForStatusBarHeight? { paddingTop: Constants.statusBarHeight } : null,
-      isLightMode? null : {backgroundColor: '#111'}
+      isLightMode? null : {backgroundColor: '#202020'}
       ]}>
       <FlatList 
         keyExtractor={item => item.key} 
@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
 
   exerciseContainer_dark: {
     borderBottomWidth: 1,
-    borderBottomColor: "#202020",
+    borderBottomColor: "#303030",
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: "#181818"
+    backgroundColor: "#282828"
   }
 })

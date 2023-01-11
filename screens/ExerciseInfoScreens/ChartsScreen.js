@@ -19,8 +19,6 @@ export default function ChartsScreen({route, navigation}) {
       res.push({x: date, y: oneRepMax});
     }
 
-    console.log(res);
-
     return res;
 
   }());
@@ -48,7 +46,7 @@ export default function ChartsScreen({route, navigation}) {
   }())
 
   return (
-    <View style={[styles.container, isLightMode? null : {backgroundColor: '#111'} ]}>
+    <View style={[styles.container, isLightMode? null : {backgroundColor: '#202020'} ]}>
       <ScrollView 
         contentContainerStyle={styles.contentContainer}
       >
@@ -68,12 +66,13 @@ export default function ChartsScreen({route, navigation}) {
           </View>
         :
           <View>
-            <View style={styles.card}>
+            <View style={isLightMode? styles.card_light : styles.card_dark}>
               <Text style={{
                 fontWeight: 'bold',
                 textAlign: 'center',
                 fontSize: 22,
-                marginBottom: 30
+                marginBottom: 30,
+                color: isLightMode? 'black' : 'white'
               }}>1rm over time</Text>
               <VictoryChart
                 theme={VictoryTheme.material}
@@ -161,9 +160,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  card: {
+  card_light: {
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 15,
+    paddingVertical: 15,
+    alignItems: 'center'
+  },
+
+  card_dark: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
     borderRadius: 15,
     paddingVertical: 15,
     alignItems: 'center'

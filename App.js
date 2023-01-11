@@ -1,4 +1,3 @@
-
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from 'react-redux';
 import { persistor, Store } from './redux/store'

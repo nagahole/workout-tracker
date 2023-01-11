@@ -95,7 +95,7 @@ export default function StartWorkoutScreen({route, navigation}) {
           {
             !editable? null :
             <TouchableOpacity onPress={() => { editTemplate(wt, i) }}>
-              <FontAwesomeIcon icon="fa-regular fa-pen-to-square" size={20}/>
+              <FontAwesomeIcon icon="fa-regular fa-pen-to-square" size={20} color={isLightMode? 'black' : 'white'}/>
             </TouchableOpacity>
           }
         </View>
@@ -121,7 +121,7 @@ export default function StartWorkoutScreen({route, navigation}) {
         paddingTop: insets.top,
         paddingLeft: insets.left,
         paddingRight: insets.right,
-      }, isLightMode? null : { backgroundColor: '#111' }]}
+      }, isLightMode? null : { backgroundColor: '#202020' }]}
     >
       <ScrollView 
         contentContainerStyle={styles.scrollviewContainer}
