@@ -83,7 +83,7 @@ class WorkoutScreen extends React.Component {
     seconds = dateObj.getSeconds();
 
     hoursString = hours.toString();
-    minutesString = minutes.toString().padStart(minutesPadding, '0');
+    minutesString = minutes.toString().padStart(minutesPadding, hours > 0 ? 2 : minutesPadding);
     secondsString = seconds.toString().padStart(2, '0');
   
     timeString = (hours === 0? "" : hoursString + ':' )
@@ -439,8 +439,6 @@ class WorkoutScreen extends React.Component {
     clearInterval(this.countdownInterval);
 
     Alert.alert("Rest Timer Up");
-
-    console.log("REST TIMER UP");
 
     this.setState(prev => {
       if (prev.restTimerInfo.onCompleteActivated)
@@ -906,7 +904,8 @@ const styles = StyleSheet.create({
 
   footerContainer: {
     padding: 20,
-    width: Dimensions.get('window').width
+    width: Dimensions.get('window').width,
+    height: 300
   },
 
   

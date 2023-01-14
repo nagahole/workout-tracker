@@ -8,20 +8,32 @@ import HistoryStackScreen from "./stacks/HistoryStackScreen";
 import ProfileStackScreen from "./stacks/ProfileStackScreen";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSquareCheck } from "@fortawesome/free-solid-svg-icons/faSquareCheck";
-import { faCircleInfo, faPlus, faStar, faStopwatch20, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeftLong, faArrowRightLong, faBullseye, faCircleInfo, faPlus, faStar, faStopwatch20, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faNoteSticky, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import HelperFunctions from "./classes/HelperFunctions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { StatusBar } from "react-native";
+import { setMeals, setTargetOnDay, SET_MEALS } from "./redux/actions";
+import NutritionInfo from "./classes/NutritionInfo";
 
-library.add(faSquareCheck, faStopwatch20, faXmark, faNoteSticky, faCircleInfo, faPlus, faPenToSquare, faStar);
+library.add(faSquareCheck, faStopwatch20, faXmark, faNoteSticky, 
+  faCircleInfo, faPlus, faPenToSquare, faStar, faBullseye,
+  faArrowLeftLong, faArrowRightLong);
 
 const Tab = createBottomTabNavigator();
 
 export default function WorkoutTrackerApp() {
 
+  const dispatch = useDispatch();
+
+  const targets = useSelector(state => state.macroTargets);
+
   const isLightMode = HelperFunctions.isLightMode();
+
+  useEffect(() => {
+    dispatch(setTargetOnDay(targets.default, new Date()));
+  }, []);
 
   useEffect(() => {
     if (isLightMode) {

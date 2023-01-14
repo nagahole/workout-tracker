@@ -115,7 +115,6 @@ export default function RestTimer(props) {
         </View>
       </View>
     </View>
-    
   )
 }
 

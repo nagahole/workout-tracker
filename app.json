@@ -21,13 +21,20 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.naga.power",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#000000"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5df6a195-254c-4baf-a2bf-78c9b84cb0a5"
+      }
     }
   }
 }

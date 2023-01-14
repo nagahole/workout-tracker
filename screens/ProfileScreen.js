@@ -1,8 +1,11 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Dimensions, Modal, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import HelperFunctions from "../classes/HelperFunctions";
+import DailyMacrosMore from "../components/DailyMacrosMore";
+import DailyMacros from "../components/widgets/DailyMacros";
 import WorkoutsPerWeek from "../components/widgets/WorkoutsPerWeek";
 
 export default function ProfileScreen({route, navigation}) {
@@ -10,6 +13,8 @@ export default function ProfileScreen({route, navigation}) {
   const insets = useSafeAreaInsets();
 
   const workouts = useSelector(state => state.workouts);
+
+  const [dailyMacrosOpen, setDailyMacrosOpen] = useState(false);
 
   const isLightMode = HelperFunctions.isLightMode();
 
@@ -19,7 +24,7 @@ export default function ProfileScreen({route, navigation}) {
       paddingLeft: insets.left,
       paddingRight: insets.right,
     }, isLightMode? null : { backgroundColor: "#202020" } ]}>
-      <ScrollView style={styles.scrollview}>
+      <ScrollView style={styles.scrollview} contentContainerStyle={{ padding: 20 }}>
         <Text style={isLightMode? styles.h1_light : styles.h1_dark}>Profile</Text>
         <View style={{
           marginBottom: 20
@@ -32,6 +37,19 @@ export default function ProfileScreen({route, navigation}) {
         <Text style={isLightMode? styles.h3_light : styles.h3_dark}>Dashboard</Text>
         
         <WorkoutsPerWeek/>
+        <DailyMacros openMoreInfoScreen={() => { setDailyMacrosOpen(true) }}/>
+
+        <Modal
+          visible={dailyMacrosOpen}
+          transparent={true}
+          animationType='fade'
+        >
+          <DailyMacrosMore
+            closeModal={() => {setDailyMacrosOpen(false)} }
+            openModal={() => {setDailyMacrosOpen(true)} }
+            navigation={navigation}
+          />
+        </Modal>
         
       </ScrollView>
     </View>
@@ -47,7 +65,7 @@ const styles = StyleSheet.create({
 
   scrollview: {
     width: Dimensions.get('window').width,
-    padding: 20
+    flex: 1
   },
 
   h1_light: {

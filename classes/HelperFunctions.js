@@ -82,6 +82,10 @@ class HelperFunctions {
     return weight * (1 + 0.0333 * reps);
   }
 
+  static calculateCalories(protein = 0, fats = 0, carbs = 0) {
+    return protein * 4 +  fats * 9 + carbs * 4;
+  }
+
   static getOneRepMaxFromEachWorkout(exercise, workouts = this.getWorkouts()) {
     let dayAndSets = {}
 
