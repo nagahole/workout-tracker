@@ -32,6 +32,8 @@ export default function WorkoutTrackerApp() {
   const isLightMode = HelperFunctions.isLightMode();
 
   useEffect(() => {
+    //default is updated every time the user inputs a new macro target
+    //it isn't a fixed value
     dispatch(setTargetOnDay(targets.default, new Date()));
   }, []);
 

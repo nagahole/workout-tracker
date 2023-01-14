@@ -43,7 +43,7 @@ export default function DailyMacrosMore(props) {
           justifyContent: 'space-between'
         }}>
           <Text style={isLightMode? styles.macroTitle_light : styles.macroTitle_dark}>{props.title}</Text>
-          <Text style={isLightMode? styles.macroValues_light : styles.macroValues_dark}>{props.numerator}/{props.denominator}</Text>
+          <Text style={isLightMode? styles.macroValues_light : styles.macroValues_dark}>{Math.round(props.numerator)}/{Math.round(props.denominator)}</Text>
         </View>
         <Progress.Bar
           animated={true}
@@ -108,15 +108,12 @@ export default function DailyMacrosMore(props) {
   let otherCalories = totalCalories - HelperFunctions.calculateCalories(totalProtein, totalFats, totalCarbs);
 
   const data = [
-    {x: 'Protein', y: totalProtein * 4}, 
-    {x: 'Fats', y: totalFats * 9}, 
-    {x:'Carbs', y: totalCarbs * 4}, 
-    {x: 'Other', y: otherCalories}, 
+    {x: 'Protein', y: (totalProtein * 4) ?? 0}, 
+    {x: 'Fats', y: (totalFats * 9) ?? 0}, 
+    {x:'Carbs', y: (totalCarbs * 4) ?? 0}, 
+    {x: 'Other', y: (otherCalories) ?? 0}, 
+    {x: 'Missing', y: missingCalories >= 0 ? missingCalories : 0}
   ];
-
-  if (missingCalories >= 0) {
-    data.push({x: 'Missing', y: missingCalories})
-  }
 
   function incrementDate(increment) {
     let _date = date;
@@ -244,13 +241,13 @@ export default function DailyMacrosMore(props) {
                   stroke: 'transparent'
                 }
               }}
-              animate={true}
+              animate={{easing: 'exp'}}
               theme={VictoryTheme.material}
-              innerRadius={70}
-              radius={90}
+              innerRadius={Dimensions.get('window').width * 0.25}
+              radius={Dimensions.get('window').width * 0.28}
               padAngle={0.5}
-              width={300}
-              height={250}
+              width={Dimensions.get('window').width * 0.8}
+              height={Dimensions.get('window').width * 0.66}
               data={data}
               labels={({datum}) => null}
               colorScale={[PROTEIN_COLOR, FATS_COLOR, CARBS_COLOR, OTHER_COLOR, MISSING_COLOR]}

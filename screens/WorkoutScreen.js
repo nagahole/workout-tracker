@@ -320,9 +320,9 @@ class WorkoutScreen extends React.Component {
       : this.isEditWorkoutMode()? 'Delete Workout?' : 'Cancel Workout?',
       'This cannot be undone. Continue?',
       [
-        { text: "Don't leave", style: 'cancel', onPress: () => {} },
+        { text: "Don't Leave", style: 'cancel', onPress: () => {} },
         {
-          text: this.isEditTemplateMode()? 'Delete' : (this.isEditWorkoutMode()? 'Delete' : 'Exit'),
+          text: this.isEditTemplateMode()? 'Delete' : (this.isEditWorkoutMode()? 'Delete' : 'Continue'),
           style: 'destructive',
           onPress: () => {
             if (this.isEditTemplateMode()) {

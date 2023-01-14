@@ -11,7 +11,7 @@ import Svg from "react-native-svg";
 import { ScrollView } from "react-native-gesture-handler";
 import MealEntry from "../classes/MealEntry";
 
-function AddMealConfirmScreen({navigation, route, theme}) {
+function AddMealConfirmScreen({navigation, route}) {
 
   const isLightMode = HelperFunctions.isLightMode();
 
@@ -107,23 +107,8 @@ function AddMealConfirmScreen({navigation, route, theme}) {
           }]}>Serving Size</Text>
           <View style={{flex: 2}}>
             <DropDown
-              contentStyle={isLightMode? null : {
-                backgroundColor: "#444",
-                color: "white"
-              }}
-              outlineStyle={isLightMode? null : {
-                borderColor: '#444'
-              }}
-              underlineColor={isLightMode? null : "#919191"}
-              activeUnderlineColor={isLightMode? null : "#aaa"}
               mode={isLightMode? "outlined" : "flat"} 
-              textColor={isLightMode? null : 'white'}
-              style={{marginBottom: 5}}
               activeColor="#58A5F8"
-              dropdownStyle={isLightMode? null : {
-                backgroundColor: "#444",
-                color: 'red'
-              }}
               dropDownItemStyle={isLightMode? null : {
                 backgroundColor: "#444"
               }}
@@ -138,8 +123,6 @@ function AddMealConfirmScreen({navigation, route, theme}) {
                 color: "#58A5F8",
                 fontWeight: 'bold'
               }}
-
-              theme={theme}
             
               visible={servingSizeDropdownVisible}
               showDropDown={() => setServingSizeDropdownVisible(true)}
@@ -203,11 +186,11 @@ function AddMealConfirmScreen({navigation, route, theme}) {
                   }
                 }}
                 theme={VictoryTheme.material}
-                innerRadius={40}
-                radius={47}
+                innerRadius={Dimensions.get('window').width * 0.10}
+                radius={Dimensions.get('window').width * 0.12}
                 padAngle={1}
-                width={94}
-                height={94}
+                width={Dimensions.get('window').width * 0.245}
+                height={Dimensions.get('window').width * 0.25}
                 data={DATA}
                 labels={() => null}
                 colorScale={[PROTEIN_COLOR, FATS_COLOR, CARBS_COLOR]}
@@ -270,7 +253,7 @@ function AddMealConfirmScreen({navigation, route, theme}) {
   )
 }
 
-export default withTheme(AddMealConfirmScreen);
+export default AddMealConfirmScreen;
 
 const styles = StyleSheet.create({
   container: {

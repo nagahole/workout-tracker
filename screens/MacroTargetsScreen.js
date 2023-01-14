@@ -18,9 +18,9 @@ export default function MacroTargetsScreen({navigation, route}) {
   const [displayInfoText, setDisplayInfoText] = useState(false);
   const [displayTimeout, setDisplayTimeout] = useState();
 
+  const [proteinText, setProteinText] = useState("");
   const [fatsText, setFatsText] = useState("");
   const [carbsText, setCarbsText] = useState("");
-  const [proteinText, setProteinText] = useState("");
 
   const [displaySuccess, setDisplaySuccess] = useState(false);
   const [displaySuccessTimeout, setDisplaySuccessTimeout] = useState();
@@ -213,9 +213,30 @@ export default function MacroTargetsScreen({navigation, route}) {
           }
         }}        
       />
+
+      <View style={{
+        marginTop: 20,
+        marginVertical: 10
+      }}>
+        <Button
+          title="MACRO CALCULATOR"
+          onPress={() => {
+            navigation.navigate("Macro Calculator", {
+              onCalculated: nutritionInfo => {
+                setUseManualCalories(true);
+                setManualCaloriesText(nutritionInfo.calories.toString());
+
+                setProteinText(nutritionInfo.protein.toString());
+                setFatsText(nutritionInfo.fats.toString());
+                setCarbsText(nutritionInfo.carbs.toString());
+              }
+            });
+          }}
+        />
+      </View>
       
       <View style={{
-        marginVertical: 30
+        marginBottom: 30
       }}>
         <Button
           title="SET TARGETS"

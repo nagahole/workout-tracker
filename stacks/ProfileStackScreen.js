@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AddMealConfirmScreen from "../screens/AddMealConfirmScreen";
 import AddMealScreen from "../screens/AddMealScreen";
 import CreateMealScreen from "../screens/CreateMealScreen";
+import MacroCalculatorScreen from "../screens/MacroCalculatorScreen";
 import MacroTargetsScreen from "../screens/MacroTargetsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
@@ -17,6 +18,7 @@ export default function ProfileStackScreen() {
       <ProfileStack.Screen name="Add Meal Confirm" component={AddMealConfirmScreen} options={{headerShown: true, title: "Add Meal"}} />
       <ProfileStack.Screen name="Edit Meal Confirm" component={AddMealConfirmScreen} options={{headerShown: true, title: "Edit Meal"}} />
       <ProfileStack.Screen name="Macro Targets" component={MacroTargetsScreen} options={{headerShown: true, title: "Macro Targets"}} />
+      <ProfileStack.Screen name="Macro Calculator" component={MacroCalculatorScreen} options={{headerShown: true, title: "Macro Calculator"}} />
     </ProfileStack.Navigator>
   );
 }
